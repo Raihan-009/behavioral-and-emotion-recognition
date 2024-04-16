@@ -38,7 +38,19 @@ def draw_emotion_text(frame, face, emotion):
     cv2.putText(frame, emotion, text_position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (255, 255, 255), 2)
 
 def play_alert_sound(emotion):
-    if emotion in ["sad", "angry"]:
+    global sad_duration, angry_duration
+    
+    if emotion == "sad":
+        sad_duration += 1
+        angry_duration = 0
+    elif emotion == "angry":
+        angry_duration += 1
+        sad_duration = 0
+    else:
+        sad_duration = 0
+        angry_duration = 0
+
+    if sad_duration >= 5 or angry_duration >= 5:
         pygame.mixer.init()
         alert_sound = pygame.mixer.Sound("alert.wav")
         alert_sound.play()
