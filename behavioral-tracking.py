@@ -17,8 +17,8 @@ cap = cv2.VideoCapture(0)
 face_detector = dlib.get_frontal_face_detector()
 faceLandmarks = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 
-plotY = LivePlot(640,480,(20,50), invert=True)
-plotMar = LivePlot(640,480,(10,50), invert=True)
+plotY = LivePlot(520,360,(20,50), invert=True)
+plotMar = LivePlot(520,360,(10,50), invert=True)
 ratioList = []
 
 idList = [36,37,38,39,40,41,49,50,51,52,53,54,55,56,57,58,59,60]
@@ -112,7 +112,7 @@ while True:
                 activity = "Alert! Are you sleeping?"
                 color = (0,0,255)
                 # Play sound
-                # alert_sound.play()
+                alert_sound.play()
         elif (left_eye == 1 or right_eye ==1 or mar == 3):
             sleepiness = 0
             drowsiness +=1 
@@ -121,7 +121,7 @@ while True:
                 activity = "Hushh! You looks sleepy!"
                 color = (0,0,0)
                 # Play sound
-                # alert_sound.play()
+                alert_sound.play()
         elif (left_eye == 2 or right_eye ==2 and mar == 4):
             drowsiness =0
             sleepiness =0
@@ -137,19 +137,19 @@ while True:
                 activity = "Hushh! You looks sleepy!"
                 color = (0,255,0)
                 # Play sound
-                # alert_sound.play()
+                alert_sound.play()
         
     else:
         # print("Error!")
         activity = "Driver Distracted!"
         color = (0,0,0)
         # Play sound
-        # alert_sound.play()
+        alert_sound.play()
 
     cv2.rectangle(frame, (10,5),(445,40), (255,255,255), -1 )
     cv2.putText(frame, activity, (15,30), cv2.FONT_HERSHEY_COMPLEX, 1, color ,2 )
 
-    img = cv2.resize(frame, (640, 480))
+    img = cv2.resize(frame, (520,360))
     imgstack = stackImages([img, imgPlot], 2, 1)
     imgstack2 = stackImages([img, marPlot], 2, 1)
     cv2.imshow('Drowsiness Monitoring', imgstack)
