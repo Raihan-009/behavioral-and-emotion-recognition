@@ -21,6 +21,8 @@ plotY = LivePlot(640,480,(20,50), invert=True)
 plotMar = LivePlot(640,480,(10,50), invert=True)
 ratioList = []
 
+idList = [36,37,38,39,40,41,49,50,51,52,53,54,55,56,57,58,59,60]
+
 sleepiness = 0
 drowsiness = 0
 awakeness = 0
@@ -77,9 +79,14 @@ while True:
         #     y2 = face.bottom()
 
         landmarks = faceLandmarks(gray,face)
-        #print(landmarks)
+        for n in idList:
+            x = landmarks.part(n).x
+            y = landmarks.part(n).y
+
+            cv2.circle(frame,(x,y), 2,(0,0,255), 4)
+
         landmarks = face_utils.shape_to_np(landmarks)
-        #print(landmarks)
+        # print(landmarks)
         
         left_eye, ratio = blinkingDetection(landmarks[36],landmarks[37],landmarks[38],landmarks[41],landmarks[40],landmarks[39])
         #print(left_eye)
