@@ -18,6 +18,7 @@ face_detector = dlib.get_frontal_face_detector()
 faceLandmarks = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 
 plotY = LivePlot(640,480,(20,50), invert=True)
+plotMar = LivePlot(640,480,(10,50), invert=True)
 ratioList = []
 
 sleepiness = 0
@@ -56,9 +57,9 @@ def lip_distance(shape):
     mouth_aspect_distance = abs(top_mean[1] - low_mean[1])
     #print(mouth_aspect_distance)
     if (mouth_aspect_distance > 20):
-        return 3
+        return 3, mouth_aspect_distance
     else:
-        return 4
+        return 4, mouth_aspect_distance
 
 while True:
     ret, frame = cap.read()
@@ -85,11 +86,16 @@ while True:
         right_eye = blinkingDetection(landmarks[42],landmarks[43],landmarks[44],landmarks[47],landmarks[46],landmarks[45])
         #print(right_eye)
         
-        print(ratio*100)
+        # print(ratio*100)
         ratio = int((ratio*100)+10)
         imgPlot = plotY.update(ratio)
+        
+        
 
-        mar = lip_distance(landmarks)
+        mar, marr = lip_distance(landmarks)
+        # print(int(marr))
+        
+        marPlot = plotMar.update(marr)
 
         if (left_eye == 0 or right_eye == 0 or mar == 0):
             sleepiness += 1
@@ -138,7 +144,9 @@ while True:
 
     img = cv2.resize(frame, (640, 480))
     imgstack = stackImages([img, imgPlot], 2, 1)
+    imgstack2 = stackImages([img, marPlot], 2, 1)
     cv2.imshow('Drowsiness Monitoring', imgstack)
+    cv2.imshow('Yawnning Monitoring', imgstack2)
     
     
     
